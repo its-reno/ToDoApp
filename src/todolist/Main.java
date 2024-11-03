@@ -20,7 +20,7 @@ public class Main {
                     todoList.addItem(scanner); // Method to add a new to-do item
                     break;
                 case 2:
-                    todoList.getAllItems(); // Method to display all items
+                    todoList.listAllItems(); // Method to display all items
                     break;
 
                 case 3:
@@ -31,10 +31,10 @@ public class Main {
                     todoList.updateTask(scanner); // Method to modify an item by ID
                     break;
                 case 5:
-                    todoList.getPendingItems(); // Method to display only pending items
+                    todoList.listPendingItems(); // Method to display only pending items
                     break;
                 case 6:
-                    todoList.getCompletedItems(); // Method to display only completed items
+                    todoList.listCompletedItems(); // Method to display only completed items
                     break;
                 case 7:
                     todoList.deleteTask(scanner);

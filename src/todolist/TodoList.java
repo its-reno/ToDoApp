@@ -1,6 +1,7 @@
 package todolist;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,12 +12,9 @@ public class TodoList {
 
     //add a new item to the to-do list
     public void addItem(Scanner scanner) {
-        System.out.println("What's the title?");
-        String title = scanner.nextLine();
-        System.out.println("What's the description");
-        String description = scanner.nextLine();
-        System.out.println("Enter due date:");
-        LocalDate dueDate = LocalDate.parse(scanner.nextLine());
+        String title = readStringInput(scanner, "Enter title: ");
+        String description = readStringInput(scanner, "Enter description: ");
+        LocalDate dueDate = readDateInput(scanner, "Enter due date: ");
 
         TodoItem item = new TodoItem(title, description, dueDate);
 
@@ -24,7 +22,7 @@ public class TodoList {
     }
 
     //list all items
-    public void getAllItems() {
+    public void listAllItems() {
         if(items.isEmpty()){
             System.out.println("The list is empty!\n");
             return;
@@ -36,7 +34,7 @@ public class TodoList {
     }
 
     //list all pending items
-    public void getPendingItems() {
+    public void listPendingItems() {
         boolean found = false;
         for (TodoItem t : items) {
             if (!t.isCompleted()) {
@@ -52,7 +50,7 @@ public class TodoList {
     }
 
     //list all completed items
-    public void getCompletedItems() {
+    public void listCompletedItems() {
         boolean found = false;
         for (TodoItem t : items) {
             if (t.isCompleted()) {
@@ -73,15 +71,7 @@ public class TodoList {
             return;
         }
 
-        System.out.println("Enter the ID of the item that's done: ");
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(scanner.nextLine());
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid ID format.");
-            return;
-        }
-
+        UUID uuid = readUUIDInput(scanner, "Enter the ID of the item that's done: ");
         boolean found = false;
         for(TodoItem t : items){
             if(t.getId().equals(uuid)){
@@ -95,17 +85,9 @@ public class TodoList {
     }
 
 
-
     //modify a task
     public void updateTask(Scanner scanner) {
-        System.out.println("Enter the ID of the task you want to modify: ");
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(scanner.nextLine());
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid ID format");
-            return;
-        }
+        UUID uuid = readUUIDInput(scanner, "Enter the ID of the task you want to modify: ");
 
         //check if the UUID exists
         TodoItem itemToUpdate = null;
@@ -130,15 +112,9 @@ public class TodoList {
         //update the values. If input is null leave the old value.
         for(TodoItem t : items){
             if(t.getId().equals(uuid)){
-                System.out.println("Enter the new title: ");
-                String newTitle = scanner.nextLine();
-                System.out.println("Enter new description: ");
-                String newDescription = scanner.nextLine();
-                System.out.println("Enter new due date: ");
-                String newDueDateString = scanner.nextLine();
-                LocalDate newDueDate = null;
-                if(!newDueDateString.isEmpty())
-                    newDueDate = LocalDate.parse(newDueDateString);
+                String newTitle = readStringInput(scanner, "Enter new title: ");
+                String newDescription = readStringInput(scanner, "Enter new description: ");
+                LocalDate newDueDate = readDateInput(scanner, "Enter new due date: ");
                 if(!newTitle.isEmpty())
                     t.setTitle(newTitle);
                 if(!newDescription.isEmpty())
@@ -157,14 +133,8 @@ public class TodoList {
             System.out.println("There's nothing to delete, you haven't added any items yet.");
             return;
         }
-        System.out.println("Enter the ID of the item you want to delete: ");
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(scanner.nextLine());
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid format!");
-            return;
-        }
+
+        UUID uuid = readUUIDInput(scanner, "Enter the ID of the item you want to delete: ");
 
         boolean found = false;
         for(TodoItem t : items){
@@ -174,9 +144,8 @@ public class TodoList {
                 System.out.println("Title: " + t.getTitle());
                 System.out.println("Description: " + t.getDescription());
                 System.out.println("Due date: " + t.getDuedate());
-                System.out.println("Are you sure you want to delete it? Y/N");
-                String confirmDelete = scanner.nextLine();
-                if(confirmDelete.toLowerCase().equals("y") ||confirmDelete.toLowerCase().equals("yes")) {
+                String confirmDelete = readStringInput(scanner, "Are you sure you want to delete it? Y/N");
+                if(confirmDelete.toLowerCase().trim().equals("y") ||confirmDelete.toLowerCase().trim().equals("yes")) {
                     items.remove(t);
                     System.out.println("Item deleted successfully!");
                     return;
@@ -187,6 +156,40 @@ public class TodoList {
         }
         if(!found){
             System.out.println("The ID you've entered doesn't exist!");
+        }
+    }
+
+
+    //read user String input
+    private String readStringInput(Scanner scanner, String prompt) {
+        System.out.println(prompt);
+        return scanner.nextLine().trim();
+    }
+
+    //read user UUID inpit
+    private UUID readUUIDInput(Scanner scanner, String prompt) {
+        System.out.println(prompt);
+        try {
+            return UUID.fromString(scanner.nextLine());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid UUID format.");
+            return null;
+        }
+    }
+
+    //read user Date input
+    private LocalDate readDateInput(Scanner scanner, String prompt) {
+                String input = readStringInput(scanner, prompt);
+
+        if(input.isEmpty()){
+            return null;
+        }
+
+        try {
+            return LocalDate.parse(input);
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format. Please use the format YYYY-MM-DD.");
+            return null;
         }
     }
 }
