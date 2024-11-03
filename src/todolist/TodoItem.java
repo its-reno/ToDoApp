@@ -72,13 +72,8 @@ public class TodoItem {
 
     @Override
     public String toString() {
-        return "TodoItem{" +
-                "ID ='" + id + '\'' +
-                ", title=" + title +
-                ", description='" + description + '\'' +
-                ", isCompleted=" + isCompleted +
-                ", timestamp=" + timestamp +
-                ", duedate=" + duedate +
-                '}';
+        String status = isCompleted ? "Completed" : "Pending";
+        return String.format("ID: %s\nTitle: %s\nDescription: %s\nDue Date: %s\nStatus: %s\n",
+                id.toString(), title, description, duedate.toString(), status);
     }
 }

@@ -36,6 +36,9 @@ public class Main {
                 case 6:
                     todoList.getCompletedItems(); // Method to display only completed items
                     break;
+                case 7:
+                    todoList.deleteTask(scanner);
+                    break;
                 case 0:
                     running = false; // Exit the loop and end the program
                     System.out.println("Exiting the application. Goodbye!");
@@ -57,6 +60,7 @@ public class Main {
         System.out.println("4. Update item");
         System.out.println("5. Show items in progress");
         System.out.println("6. Shows completed items");
+        System.out.println("7. Delete an item");
         System.out.println("0. Quit program");
         System.out.println("=========================");
     }
