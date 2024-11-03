@@ -8,14 +8,13 @@ public class Main {
 
     static TodoList todoList = new TodoList();
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int menuChoice;
 
         boolean running = true;
-
-
         while (running) {
             showMenu();
-            Scanner scanner = new Scanner(System.in);
-            int menuChoice = scanner.nextInt();
+            menuChoice = scanner.nextInt();
             scanner.nextLine();
 
             switch (menuChoice) {
@@ -47,17 +46,26 @@ public class Main {
                     System.out.println("Invalid choice. Please enter a valid option.");
                     break;
             }
+
         }
-
-
-
+        scanner.close();
     }
 
 
-    //TODO: finish this method
     private static void updateTask(Scanner scanner) {
-        System.out.println("Enter ");
-        todoList.updateTask();
+        System.out.println("Enter the ID of the task you want to modify: ");
+        UUID uuid = UUID.fromString(scanner.nextLine());
+        System.out.println("Enter the new title: ");
+        String newTitle = scanner.nextLine();
+        System.out.println("Enter new description: ");
+        String newDescription = scanner.nextLine();
+        System.out.println("Enter new due date: ");
+        String newDueDateString = scanner.nextLine();
+        LocalDate newDueDate = null;
+        if (!newDueDateString.isEmpty())
+            newDueDate = LocalDate.parse(newDueDateString);
+
+        todoList.updateTask(uuid, newTitle, newDescription, newDueDate);
     }
 
     private static void showMenu() {
@@ -68,6 +76,7 @@ public class Main {
         System.out.println("4. Update item");
         System.out.println("5. Show items in progress");
         System.out.println("6. Shows completed items");
+        System.out.println("0. Quit program");
         System.out.println("=========================");
     }
 

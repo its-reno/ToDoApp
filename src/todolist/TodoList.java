@@ -44,9 +44,18 @@ public class TodoList {
         }
     }
 
-    public void updateTask() {
-        setTitle(title);
-        setDescription(description);
-        setDeadline(dueDate);
+    public void updateTask(UUID uuid, String newTitle, String newDescription, LocalDate newDueDate) {
+        for (TodoItem t : items) {
+            if (t.getId().equals(uuid)) {
+                if(!newTitle.isEmpty())
+                    t.setTitle(newTitle);
+                if(!newDescription.isEmpty())
+                    t.setDescription(newDescription);
+                if(newDueDate != null)
+                    t.setDuedate(newDueDate);
+
+                break;
+            }
+        }
     }
 }

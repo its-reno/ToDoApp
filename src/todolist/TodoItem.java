@@ -10,15 +10,15 @@ public class TodoItem {
     private String description;
     private boolean isCompleted;
     private LocalDate timestamp;
-    private LocalDate deadline;
+    private LocalDate duedate;
 
-    public TodoItem(String name, String description, LocalDate deadline) {
+    public TodoItem(String name, String description, LocalDate duedate) {
         this.id = UUID.randomUUID();
         this.title = name;
         this.description = description;
         this.isCompleted = false;
         this.timestamp = LocalDate.now();
-        this.deadline = deadline;
+        this.duedate = duedate;
     }
 
     public UUID getId() {
@@ -62,24 +62,23 @@ public class TodoItem {
         this.timestamp = timestamp;
     }
 
-    public LocalDate getDeadline() {
-        return deadline;
+    public LocalDate getDuedate() {
+        return duedate;
     }
 
-    public void setDeadline(LocalDate deadline) {
-        this.deadline = deadline;
+    public void setDuedate(LocalDate duedate) {
+        this.duedate = duedate;
     }
 
     @Override
     public String toString() {
-        return "TodoRecord{" +
-                "id=" + id +
-                ", name='" + title + '\'' +
-                ", isCompleted='" + isCompleted + '\'' +
+        return "TodoItem{" +
+                "ID ='" + id + '\'' +
+                ", title=" + title +
+                ", description='" + description + '\'' +
+                ", isCompleted=" + isCompleted +
                 ", timestamp=" + timestamp +
-                ", deadline=" + deadline +
+                ", duedate=" + duedate +
                 '}';
     }
-
-
 }
